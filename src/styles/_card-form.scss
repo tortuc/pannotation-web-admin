@@ -1,0 +1,12 @@
+.card-form {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    &__footer {
+        padding-top: 24px;
+    }
+    &__footer-action {
+        background-color: #fafafa;
+        width: 100%;
+    }
+}

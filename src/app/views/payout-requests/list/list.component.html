@@ -1,0 +1,57 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Payout requests</h2>
+    </ng-container>
+    <ng-container content>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="scrollable">
+                            <table class="table table-stripped toggle-arrow-tiny dataTable">
+                                <thead>
+                                <tr>
+                                    <th>Provider’s name</th>
+                                    <th>Amount of money</th>
+                                    <th>Created at date</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let payoutRequest of payoutRequestsList | async">
+                                    <td>
+                                        {{ payoutRequest.provider.firstName }} {{ payoutRequest.provider.lastName }}
+                                    </td>
+                                    <td>
+                                        {{ payoutRequest.amount }}
+                                    </td>
+                                    <td>
+                                        {{ payoutRequest.createdAt | date:'mediumDate' }}
+                                    </td>
+                                    <td>
+                                        {{ payoutRequest.status | payoutRequestStatus}}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="btn-group" *ngIf="payoutRequest.status === statusesValues.pending">
+                                            <button class="btn-white btn btn-xs" (click)="changeStatus(payoutRequest, statusesValues.accepted)">Accept
+                                            </button>
+                                            <button class="btn-white btn btn-xs" (click)="changeStatus(payoutRequest, statusesValues.declined)">Decline
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="limit < (payoutRequestsTable.lengthChanges | async)">
+            <pagination [totalItems]="payoutRequestsTable.lengthChanges | async" [(ngModel)]="pageIndex"
+                        (pageChanged)="urlFilter.setPage($event)"></pagination>
+        </div>
+
+    </ng-container>
+</app-view-container>

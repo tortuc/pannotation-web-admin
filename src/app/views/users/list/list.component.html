@@ -1,0 +1,123 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Users</h2>
+        <breadcrumb #parent>  
+            <ol class="breadcrumb">
+              <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                <li *ngIf="!route.terminal" class="breadcrumb-item">
+                  <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                </li>
+                <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">{{ route.displayName }}</li>
+              </ng-template>
+            </ol>
+          </breadcrumb> 
+    </ng-container>
+
+    <ng-container content>
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input type="text" [formControl]="searchControl" [attr.maxlength]="50" placeholder="Search by: First Name, Last Name, Email, Country"
+                               class="form-control">
+                    </div>
+                </div>               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="scrollable">
+                            <table class="table table-stripped toggle-arrow-tiny dataTable">
+                                <thead>
+                                <tr>
+                                    <th sortingHeader class="co-sm-3"
+                                        sortingAttribute="id"
+                                        [filter]="urlFilter">
+                                        Id
+                                    </th>
+                                    <th sortingHeader class="co-sm-3"
+                                        sortingAttribute="firstName"
+                                        [filter]="urlFilter">
+                                        First Name
+                                    </th>
+                                    <th sortingHeader class="co-sm-3"
+                                        sortingAttribute="lastName"
+                                        [filter]="urlFilter">
+                                        Last Name
+                                    </th>
+                                    <th sortingHeader
+                                        sortingAttribute="email"
+                                        [filter]="urlFilter">Email
+                                    </th>
+                                    <th sortingHeader
+                                        sortingAttribute="isSubscribed"
+                                        [filter]="urlFilter">
+                                        Status
+                                    </th>
+                                    <th sortingHeader
+                                        sortingAttribute="country"
+                                        [filter]="urlFilter">
+                                        Country
+                                    </th>
+                                    <th sortingHeader
+                                        sortingAttribute="isComposer"
+                                        [filter]="urlFilter">
+                                        User Status
+                                    </th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngIf="(usersTable.lengthChanges | async) === 0">
+                                        <td colspan="8" style="text-align: center"><h3>{{ (usersTable?.isPending | async) ? 'Loading...' : 'Nothing found' }}</h3></td>
+                                    </tr>
+                                <tr *ngFor="let user of usersList | async">
+                                    <td>
+                                        {{ user.id }}
+                                    </td>
+                                    <td>
+                                        {{ user.firstName }}
+                                    </td>
+                                    <td>
+                                        {{ user.lastName}}
+                                    </td>
+                                    <td>
+                                        {{ user.email }}
+                                    </td>
+                                    <td>
+                                        {{ user.isSubscribed ? 'Subscribed' : 'Not subscribed' }}
+                                    </td>
+                                    <td>
+                                        {{ user.country}}
+                                    </td>
+                                    <td>
+                                        {{ user.isComposer ? 'Composer/Arranger' : '-' }}
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="btn-group">
+                                            <button class="btn-white btn btn-xs" [routerLink]="['/users', user.id]">
+                                                Details
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="limit < (usersTable.lengthChanges | async)">
+            <pagination [totalItems]="usersTable.lengthChanges | async" 
+                        [itemsPerPage]="limit"
+                        [(ngModel)]="pageIndex"
+                        (pageChanged)="urlFilter.setPage($event)"
+                        [maxSize]="5" 
+                        [rotate]="true" 
+                        [boundaryLinks]="true"></pagination>
+        </div>
+    </ng-container>
+</app-view-container>

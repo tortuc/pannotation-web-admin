@@ -1,0 +1,78 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>{{otherFile.fileType | otherFile}} management</h2>
+        <breadcrumb #parent>
+            <ol class="breadcrumb">
+                <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                    <li *ngIf="!route.terminal" class="breadcrumb-item">
+                        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                    </li>
+                    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">
+                        {{ route.displayName }}</li>
+                </ng-template>
+            </ol>
+        </breadcrumb>
+    </ng-container>
+    <ng-container content>
+        <div class="songsheet">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-8 b-r">
+                                    <h2 class="font-bold m-b-xs">
+                                        {{otherFile.name}}
+                                    </h2>
+                                    <div class="m-t-md">
+                                        <dl class="m-t-md">
+                                            <dt>Type:</dt>
+                                            <dd>{{ otherFile.fileType | otherFile }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md" *ngIf="otherFile.fileType !== AUDIO_PUBLICATION">
+                                            <dt>Document:</dt>
+                                            <a class="text-blue" (click)="getFile(otherFile.file.path)">Download</a>
+                                        </dl>
+                                        <dl class="m-t-md" *ngIf="otherFile.fileType === AUDIO_PUBLICATION">
+                                            <dt>Audio:</dt>
+                                            <audio *ngIf="otherFile.file.path && (audio | async) as audio" [src]="audio" class="w-75 d-flex" controls>
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </dl>
+                                    </div>
+                                    <div class="row otherfile-preview-description">
+                                        <div class="col-md-12">
+                                            <dl class="m-t-md">
+                                                <dt>Description:</dt>
+                                                <blockquote marked [text]="otherFile.description" class="blockquote mb-0">
+                                                </blockquote>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="m-t-md">
+                                        <dl class="m-t-md">
+                                            <dt>Available Free:</dt>
+                                            <dd>{{otherFile.availableFree}}</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="btn-group mt-5">
+                                        <button routerLink="edit" class="btn btn-primary btn-sm">Edit</button>
+                                        <button class="btn-white btn btn-xs"
+                                                (click)="onDelete(otherFile.id)">Delete</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 h-100 mh-100">
+                                    <div class="songsheet-images">
+                                        <img class="image__picture" [src]="(otherFileImage | async)" alt="Cover image"
+                                             #image>
+                                        <h4>Cover image</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</app-view-container>

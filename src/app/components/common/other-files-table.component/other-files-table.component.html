@@ -1,0 +1,70 @@
+<div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="scrollable">
+                        <table class="table table-stripped toggle-arrow-tiny dataTable">
+                            <thead>
+                            <tr>
+                                <th sortingHeader
+                                sortingAttribute="Id"
+                                [filter]="urlFilter">
+                                ID</th>
+                                <th sortingHeader
+                                    sortingAttribute="Name"
+                                    [filter]="urlFilter">
+                                Other files Name
+                                </th>
+                                <th sortingHeader
+                                    sortingAttribute="FileType"
+                                    [filter]="urlFilter">
+                                Type
+                                </th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="(otherFilesTable.lengthChanges | async) === 0">
+                                    <td colspan="5" style="text-align: center"><h3>{{ (otherFilesTable?.isPending | async) ? 'Loading...' : 'Nothing found' }}</h3></td>
+                                </tr>
+                            <tr *ngFor="let otherFile of otherFilesList | async">
+                                <td>
+                                    {{ otherFile.id }}
+                                </td>
+                                <td>
+                                    <a routerLink="/other-files/{{otherFile.id}}">
+                                        <img class="otherfile-image"
+                                         [src]="otherFile.preview && otherFile.preview.compactPath || imagePlaceholder" alt="image"/>
+                                         {{ otherFile.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ otherFile.fileType | otherFile }}
+                                </td>
+                              
+                                <td class="text-right">
+                                    <div class="btn-group">
+                                        <button class="btn-white btn btn-xs" [routerLink]="['/other-files', otherFile.id]">
+                                            Details
+                                        </button>
+                                        <button class="btn-white btn btn-xs" [routerLink]="['/other-files', otherFile.id, 'edit']">
+                                            Edit
+                                        </button>
+                                        <button class="btn-white btn btn-xs" (click)="delete(otherFile)">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="limit < (otherFilesTable.lengthChanges | async)">
+        <pagination [totalItems]="otherFilesTable.lengthChanges | async" 
+                    [itemsPerPage]="limit"
+                    [(ngModel)]="pageIndex"
+                    (pageChanged)="urlFilter.setPage($event)"></pagination>
+    </div>
+    

@@ -1,0 +1,17 @@
+@import "../../../styles/breakpoints";
+
+.vs {
+    &__main {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}
+
+@media screen and (max-width: $small-screen-up - 1) {
+    .vs {
+        &__main {
+            padding-bottom: 16px;
+            padding-top: 16px;
+        }
+    }
+}

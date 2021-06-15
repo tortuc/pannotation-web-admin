@@ -1,0 +1,150 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Orders</h2>
+        <breadcrumb #parent>
+            <ol class="breadcrumb">
+                <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                    <li *ngIf="!route.terminal" class="breadcrumb-item">
+                        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                    </li>
+                    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">
+                        {{ route.displayName }}</li>
+                </ng-template>
+            </ol>
+        </breadcrumb>
+    </ng-container>
+
+    <ng-container content>
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input type="text" [formControl]="searchControl" [attr.maxlength]="50"
+                            placeholder="Search" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <div class="input-group" id='date-picker'>
+                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [displayMonths]="2"
+                                        [dayTemplate]="t" outsideDays="hidden" [showWeekNumbers]="false" ngbDatepicker
+                                        #d="ngbDatepicker" (dateSelect)="onDateSelection($event)" [autoClose]="false"
+                                        [value]="fullDate" (document:click)="closeFix($event, d)">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                                            type="button">Select Date</button>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" (click)="getAll(); d.close()"
+                                            type="button">All
+                                            time</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <ng-template #t let-date="date" let-focused="focused">
+                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                                (mouseleave)="hoveredDate = null">
+                                {{ date.day }}
+                            </span>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn-primary btn" type="button" (click)="getFile()">Download CSV</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="scrollable">
+                            <table class="table table-stripped toggle-arrow-tiny dataTable">
+                                <thead>
+                                    <tr>
+                                        <th sortingHeader class="co-sm-3" sortingAttribute="id" [filter]="urlFilter">
+                                            Id
+                                        </th>
+                                        <th sortingHeader class="co-sm-3" sortingAttribute="firstName"
+                                            [filter]="urlFilter">
+                                            First Name
+                                        </th>
+                                        <th sortingHeader class="co-sm-3" sortingAttribute="lastName"
+                                            [filter]="urlFilter">
+                                            Last Name
+                                        </th>
+                                        <th sortingHeader sortingAttribute="email" [filter]="urlFilter">Email
+                                        </th>
+                                        <th sortingHeader class="co-sm-3" sortingAttribute="date" [filter]="urlFilter">
+                                            Date
+                                        </th>
+                                        <th sortingHeader class="co-sm-3" sortingAttribute="amount"
+                                            [filter]="urlFilter">
+                                            Amount
+                                        </th>
+                                        <th class="co-sm-3">
+                                            Music Scores
+                                        </th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="(ordersTable.lengthChanges | async) === 0">
+                                        <td colspan="8" style="text-align: center">
+                                            <h3>{{ (ordersTable?.isPending | async) ? 'Loading...' : 'Nothing found' }}</h3>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let order of ordersList | async">
+                                        <td>
+                                            {{ order.id }}
+                                        </td>
+                                        <td>
+                                            <a [routerLink]="['/users', order.buyerId]">
+                                                {{ order.firstName }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a [routerLink]="['/users', order.buyerId]">
+                                                {{ order.lastName }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ order.email }}
+                                        </td>
+                                        <td>
+                                            {{ order.date | date: 'dd MMM yyyy' }}
+                                        </td>
+                                        <td>
+                                            {{ (order.amount | number : '1.2-2') || 'N/A'}}
+                                        </td>
+                                        <td>
+                                            <span *ngFor="let item of order.songsheets">{{item}}; </span>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="btn-group">
+                                                <button class="btn-white btn btn-xs"
+                                                    [routerLink]="['/orders', order.id]">
+                                                    Details
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="limit < (ordersTable.lengthChanges | async)">
+            <pagination [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                [totalItems]="ordersTable.lengthChanges | async" [itemsPerPage]="limit" [(ngModel)]="pageIndex"
+                (pageChanged)="urlFilter.setPage($event)"></pagination>
+        </div>
+    </ng-container>
+</app-view-container>

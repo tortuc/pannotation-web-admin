@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="scrollable">
+                    <table class="table table-stripped toggle-arrow-tiny dataTable">
+                        <thead>
+                        <tr>
+                            <th sortingHeader
+                            sortingAttribute="Id"
+                            [filter]="urlFilter">
+                            ID</th>
+                            <th sortingHeader
+                                sortingAttribute="Name"
+                                [filter]="urlFilter">
+                            Music Score Name
+                            </th>
+                            <th sortingHeader
+                                sortingAttribute="Price"
+                                [filter]="urlFilter">
+                            Price
+                            </th>
+                            <th sortingHeader
+                                sortingAttribute="IsTop"
+                                [filter]="urlFilter">
+                            Top Music Score
+                            </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                <tr *ngIf="(songsheetsTable.lengthChanges | async) === 0">
+                                        <td colspan="5" style="text-align: center"><h3>{{ (songsheetsTable?.isPending | async) ? 'Loading...' : 'Nothing found' }}</h3></td>
+                                    </tr>
+                        <tr *ngFor="let songsheet of songsheetsList | async">
+                            <td>
+                                {{ songsheet.id }}
+                            </td>
+                            <td>
+                                <a routerLink="/music-scores/{{songsheet.id}}">
+                                    <img class="songsheet-image"
+                                     [src]="songsheet.image && songsheet.image.compactPath || imagePlaceholder" alt="image"/>
+                                     {{ songsheet.name }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ songsheet.price }}
+                            </td>
+                            <td>
+                                <input type="checkbox" [checked]="songsheet.isTop" (click)="changeTopState(songsheet.id)" />
+                            </td>
+                          
+                            <td class="text-right">
+                                <div class="btn-group">
+                                    <button class="btn-white btn btn-xs" [routerLink]="['/music-scores', songsheet.id]">
+                                        Details
+                                    </button>
+                                    <button class="btn-white btn btn-xs" [routerLink]="['/music-scores', songsheet.id, 'edit']">
+                                        Edit
+                                    </button>
+                                    <button class="btn-white btn btn-xs" (click)="delete(songsheet)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="limit < (songsheetsTable.lengthChanges | async)">
+    <pagination [totalItems]="songsheetsTable.lengthChanges | async" 
+                [itemsPerPage]="limit"
+                [(ngModel)]="pageIndex"
+                (pageChanged)="urlFilter.setPage($event)"></pagination>
+</div>

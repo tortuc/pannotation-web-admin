@@ -1,0 +1,25 @@
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <h3 *ngIf="!(isSuccessful | async)">Forgot password</h3>
+        <div *ngIf="!(isSuccessful | async)">
+            <form class="m-t text-left" [formGroup]="form" (ngSubmit)="submit(model)">
+                <formly-form [form]="form" [fields]="fields" [model]="model">
+                    <div style="text-align: right">
+                    </div>
+                    <button type="submit" class="btn btn-primary block full-width m-b" [disabled]="!form.valid">
+                        Submit
+                    </button>
+                </formly-form>
+            </form>
+        </div>
+        <div *ngIf="(isSuccessful | async)">
+            <div style="text-align: center">
+                If we find this email address in our database, we will send you new password by email
+            </div>
+        </div>
+        <div>
+            <p>Return to <a [routerLink]="['/sign-in']">Sign in</a></p>
+        </div>
+    </div>
+</div>
+

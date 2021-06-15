@@ -1,0 +1,16 @@
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <h3>LOGOTYPE</h3>
+        <p>Sign in. To see it in action.</p>
+        <form class="m-t text-left" [formGroup]="form" (ngSubmit)="submit(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model">
+                <button [disabled]="!form.valid" type="submit" class="btn btn-primary block full-width m-b">
+                    Sign in
+                </button>
+            </formly-form>
+            <a routerLink="/reset-password">
+                <small>Forgot password?</small>
+            </a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+.songsheet-images {
+    text-align: center;
+    & img {
+        max-width: 100%;
+        max-height: 300px;
+    }
+}
+
+.songsheet-videos {
+    text-align: center;
+    position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+    height: 0;
+    width: 100%;
+}
+
+.video {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+a.text-blue, a.text-blue:hover{
+    color: #337ab7;
+}
+
+.provider-avatar-images {
+    & img {
+        width: 50px;
+        border-radius: 100%;
+    }
+}

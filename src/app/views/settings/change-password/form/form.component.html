@@ -1,0 +1,23 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Change password</h2>
+    </ng-container>
+    <ng-container content>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Change password</h5>
+            </div>
+            <div class="ibox-content">
+                <form [formGroup]="form" (ngSubmit)="submit(model)">
+                    <formly-form [form]="form" [fields]="fields" [model]="model">
+                        <div style="text-align: right">
+                        </div>
+                        <button class="btn btn-success" [disabled]="!form.valid" type="submit">
+                            Continue
+                        </button>
+                    </formly-form>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</app-view-container>

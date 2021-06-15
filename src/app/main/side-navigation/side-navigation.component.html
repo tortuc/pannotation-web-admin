@@ -1,0 +1,26 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="profile-element">
+                    <div class="profile-avatar">
+                        <img [src]="avatar" alt="">
+                    </div>
+                    <p class="block m-t-xs username">
+                        <strong class="font-bold">{{fullName}}</strong>
+                    </p>
+                </div>
+                <div class="logo-element">
+                    <img src="./../../../assets/img/logo-placeholder.png">
+                </div>
+            </li>
+            <li *ngFor="let navItem of navigationList" [ngClass]="{active: activeRoute(navItem.activeLink)}">
+                <a [routerLink]="navItem.route">
+                    <i class="glyphicon glyphicon-{{navItem.icon}}"></i>
+                    <span class="nav-label">{{navItem.label}}</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</nav>

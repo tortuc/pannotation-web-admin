@@ -1,0 +1,104 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2> Order details</h2>
+        <breadcrumb #parent>
+            <ol class="breadcrumb">
+                <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                    <li *ngIf="!route.terminal" class="breadcrumb-item">
+                        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                    </li>
+                    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">
+                        {{ route.displayName }}</li>
+                </ng-template>
+            </ol>
+        </breadcrumb>
+    </ng-container>
+
+    <ng-container content>
+        <div class="order">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h2 class="font-bold m-b-xs">
+                                        <a [routerLink]="['/users', order.buyerId]">
+                                            {{order.firstName}} {{order.lastName}}
+                                        </a>
+                                    </h2>
+                                    <div class="m-t-md block">
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">ID:</dt>
+                                            <dd class="d-inline-block">{{order.id}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Date:</dt>
+                                            <dd class="d-inline-block">{{order.date | date: 'dd MMM yyyy'}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Email:</dt>
+                                            <dd class="d-inline-block">{{order.email}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Mobile Phone:</dt>
+                                            <dd class="d-inline-block">{{order.mobileNumber || 'N/A'}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Phone:</dt>
+                                            <dd class="d-inline-block">{{order.phoneNumber || 'N/A'}}</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="m-t-md block">
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block w-200">Purchased Music Scores:</dt>
+                                        </dl>
+                                        <div *ngFor="let songsheet of order.songsheets">
+                                            <dd class="d-inline-block mt-2">
+                                                {{ songsheet.name }}
+                                                <!-- <a [routerLink]="['/songsheet', songsheet.id]">
+                                                        {{ songsheet.name }}
+                                                    </a> -->
+                                            </dd>
+                                            <dd class="d-inline-block float-right text-right">
+                                                ${{(songsheet.price | number : '1.2-2')}}
+                                            </dd>
+                                        </div>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Total amount:</dt>
+                                            <dt class="d-inline-block float-right text-right">
+                                                ${{(order.amount | number : '1.2-2')}}</dt>
+                                        </dl>
+                                    </div>
+                                    <div class="m-t-md">
+                                        <dl class="m-t-md">
+                                            <dd class="d-inline-block">Card info:</dd>
+                                            <dd class="d-inline-block float-right text-right">
+                                                {{order.transactionInfo.cardType | titlecase}} ending in
+                                                {{order.transactionInfo.cardMask}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dd class="d-inline-block">Payment processor name:</dd>
+                                            <dd class="d-inline-block float-right text-right">
+                                                {{order.transactionInfo.paymentProcessor}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dd class="d-inline-block">Status of transaction:</dd>
+                                            <dd class="d-inline-block float-right text-right">
+                                                {{order.transactionInfo.transactionStatus}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dd class="d-inline-block">Expiration date:</dd>
+                                            <dd class="d-inline-block float-right text-right">
+                                                {{order.transactionInfo.expirationDate}}</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</app-view-container>

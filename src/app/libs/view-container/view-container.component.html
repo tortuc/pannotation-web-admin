@@ -1,0 +1,25 @@
+<!--<mat-toolbar color="primary">-->
+    <!--<ng-content select="[toolbar]"></ng-content>-->
+<!--</mat-toolbar>-->
+
+
+<!--<section class="container vs__main">-->
+    <!--<ng-content select="[content]"></ng-content>-->
+<!--</section>-->
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10 col-xl-12">
+        <ng-content select="[toolbar]"></ng-content>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <ng-content select="[content]"></ng-content>
+        </div>
+    </div>
+</div>

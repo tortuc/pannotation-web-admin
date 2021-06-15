@@ -1,0 +1,37 @@
+::ng-deep textarea.form-control {
+  min-height: 150px;
+}
+
+.btn-primary {
+  border: 1px solid rgba(41, 127, 202, 0.27);
+  background-color: #297fca;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.songsheet-image {
+  max-width: 100%;
+}
+
+.image-input {
+  margin-top: 10px;
+}
+
+.form-check-input {
+  margin-top: 0.2rem;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.error {
+  margin-left: 10px;
+  color: #cc5965;
+}
+
+.btn-delete {
+  width: 86px;
+}

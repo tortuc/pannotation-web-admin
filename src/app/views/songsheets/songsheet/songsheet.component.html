@@ -1,0 +1,110 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2> Music Score details</h2>
+        <breadcrumb #parent>
+            <ol class="breadcrumb">
+                <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                    <li *ngIf="!route.terminal" class="breadcrumb-item">
+                        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                    </li>
+                    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">
+                        {{ route.displayName }}</li>
+                </ng-template>
+            </ol>
+        </breadcrumb>
+    </ng-container>
+
+    <ng-container content>
+        <div class="songsheet">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-8 b-r">
+                                    <h2 class="font-bold m-b-xs">
+                                        {{songsheet.name}}
+                                    </h2>
+                                    <div class="m-t-md">
+                                        <dl class="m-t-md">
+                                            <dt>Composer Info:</dt>
+                                            <dd>{{songsheet.producer || 'N/A'}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Arranger Info:</dt>
+                                            <dd>{{songsheet.arranger || 'N/A'}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Artist:</dt>
+                                            <dd>{{songsheet.artistName || 'N/A'}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Price:</dt>
+                                            <dd>${{(songsheet.price | number : '1.2-2') || 'N/A'}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Genre:</dt>
+                                            <dd style="word-wrap: break-word">
+                                                <span *ngFor="let genre of songsheet.genres; first as isFirst"><span *ngIf="!isFirst">, </span>{{genre.name}}</span>
+                                            </dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Instruments:</dt>
+                                            <dd style="word-wrap: break-word">
+                                                <span *ngFor="let item of songsheet.instruments">#{{item.name}} </span>
+                                            </dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Document:</dt>
+                                            <a class="text-blue" (click)="getFile(songsheet.file.path)">Download</a>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt>Preview:</dt>
+                                            <a [href]="(songsheet.preview.path)" target="_blank">Download</a>
+                                        </dl>
+                                        <div class="m-t-md">
+                                            <audio *ngIf="songsheet.track" class="w-75" controls>
+                                                <source [src]="(songsheet.track.path)" type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <dl class="m-t-md">
+                                                <dt>Description:</dt>
+                                                <dd style="word-wrap: break-word">
+                                                    {{songsheet.description || 'N/A'}}</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button routerLink="edit" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-cart-plus"></i> Edit
+                                        </button>
+                                        <button class="btn-white btn btn-xs"
+                                            (click)="delete(songsheet)">Delete</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 h-100 mh-100">
+                                    <div class="songsheet-images">
+                                        <img class="image__picture" [src]="(songsheetImage | async)" alt="Cover image"
+                                            #image>
+                                        <h4>Cover image</h4>
+                                    </div>
+                                    <div>
+                                        <div class="songsheet-videos">
+                                            <iframe class="video" [src]="(songsheet.youTubeLink || '') | safe">
+                                            </iframe>
+                                        </div>
+                                        <h4 class="text-center">YouTube preview</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</app-view-container>

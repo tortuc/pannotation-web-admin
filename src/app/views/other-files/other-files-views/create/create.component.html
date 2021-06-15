@@ -1,0 +1,104 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Other Files</h2>
+        <breadcrumb #parent>
+            <ol class="breadcrumb">
+                <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                    <li *ngIf="!route.terminal" class="breadcrumb-item">
+                        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                    </li>
+                    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">{{ route.displayName }}</li>
+                </ng-template>
+            </ol>
+        </breadcrumb>
+    </ng-container>
+    <ng-container content>
+        <div class="cof">
+            <h3 class="cof__title">{{(names | async).title}}</h3>
+            <div class="cof__content">
+                <div class="row">
+                    <div class="col-12 col-lg-3 text-center">
+                        <div class="cof-image__wr">
+                            <img class="cof-image"
+                                 [src]="(image | async)?.compactPath"
+                                 alt="image" />
+                        </div>
+                        <input id="cover-image"
+                               class="form-control-file image-input"
+                               (change)="onImageChange($event)"
+                               hidden
+                               accept=".png, .jpg, .jpeg"
+                               type="file"
+                               alt="Cover image">
+                        <label for="cover-image" class="mt-2 link d-block">
+                            Upload image
+                        </label>
+                    </div>
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-12 col-lg-8">
+                                <form [formGroup]="cofForm" (ngSubmit)="onSubmit()">
+                                    <div class="d-flex">
+                                        <div class="f flex-grow-1">
+                                            <label class="f-label">
+                                                <span>{{(names | async).name}}</span>
+                                                <input type="text" class="form-control" maxlength="250" [formControl]="cofForm.get('name')">
+                                            </label>
+                                            <p *ngIf="cofForm.get('name')?.invalid && (cofForm.get('name')?.touched || cofForm.get('name')?.dirty)"
+                                                 class="f-error">{{validateControl(cofForm.get('name'), 'name')}}</p>
+                                        </div>
+                                        <div class="f ml-2">
+                                            <label class="f-label">
+                                                <span>Type</span>
+                                                <ng-select
+                                                    [searchable]="true"
+                                                    formControlName="fileType"
+                                                    [placeholder]="selectTypePlaceholder">
+                                                    <ng-option *ngFor="let type of otherFileTypes" [value]="type.value">{{type.display}}</ng-option>
+                                                </ng-select>
+                                            </label>
+                                            <p *ngIf="cofForm.get('fileType')?.invalid && (cofForm.get('fileType')?.touched || cofForm.get('fileType')?.dirty)"
+                                               class="f-error">{{validateControl(cofForm.get('fileType'), 'fileType')}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4" *ngIf="cofForm.get('fileType').value !== AUDIO_PUBLICATION">
+                                        <label for="pdf">Upload Article (.pdf)</label>
+                                        <input #pdfInput id="pdf" class="form-control-file image-input"
+                                               (change)="onFileChange($event, 'OtherFile')" accept=".pdf" type="file">
+                                        <div *ngIf="cofForm.controls['fileId'].invalid &&
+                                                    (cofForm.controls['fileId'].touched || cofForm.controls['fileId'].dirty)"
+                                             class="error">
+                                            <p>{{cofForm.get('fileId')}}</p>
+                                            {{validateControl(cofForm.controls['fileId'], 'fileId')}}
+                                        </div>
+                                     </div>
+                                    <div class="mt-4" *ngIf="cofForm.get('fileType').value === AUDIO_PUBLICATION">
+                                        <label for="mp3">Upload mp3 (.mp3)</label>
+                                        <input #mp3Input id="mp3" class="form-control-file image-input"
+                                               (change)="onFileChange($event, 'OtherFileAudio')" accept=".mp3, .aac" type="file">
+                                        <div *ngIf="cofForm.controls['fileId'].invalid &&
+                                                    (cofForm.controls['fileId'].touched || cofForm.controls['fileId'].dirty)"
+                                             class="error">
+                                            <p>{{cofForm.get('fileId')}}</p>
+                                            {{validateControl(cofForm.controls['fileId'], 'fileId')}}
+                                        </div>
+                                    </div>
+                                    <div class="editor mt-4">
+                                        <label>Description</label>
+                                        <app-markdown-editor [formControlName]="'description'">></app-markdown-editor>
+                                    </div>
+                                    <!-- Default checked -->
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="availableFree" [formControl]="cofForm.get('availableFree')">
+                                        <label class="custom-control-label" for="availableFree">Available Free</label>
+                                    </div>
+                                    <button type="submit" [disabled]="cofForm.status !== 'VALID'" class="btn btn-sm btn-primary mt-4">{{(names | async).btn}}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</app-view-container>

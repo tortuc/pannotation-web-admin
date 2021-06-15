@@ -1,0 +1,167 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Music Score details</h2>
+    </ng-container>
+    <ng-container content>
+        <form class="needs-validation" [formGroup]="songsheetForm" novalidate (ngSubmit)="submit(songsheetForm)">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 text-center">
+                    <img class="songsheet-image"
+                        [src]="(image | async)?.compactPath"
+                        alt="image" />
+                    <input id="cover-image"
+                        class="form-control-file image-input"
+                        (change)="onImageChange($event)"
+                        hidden
+                        accept=".png, .jpg, .jpeg"
+                        type="file"
+                        alt="Cover image">
+                    <label for="cover-image" class="link d-block">
+                        Edit Photo
+                    </label>
+                </div>
+                <div class="col-lg-10 col-md-9">
+                    <div class="form-row" class="col-md-9">
+                        <div class="col-md-12 mb-3">
+                            <label for="songsheet-name">Music Score Name</label>
+                            <input type="text" class="form-control" maxlength="50" id="songsheet-name"
+                                [formControl]="songsheetForm.controls['name']" [value]="currentSongsheet.name || ''"
+                                placeholder="Songsheet name" required>
+                            <div *ngIf="songsheetForm.controls['name']?.invalid && (songsheetForm.controls['name']?.touched || songsheetForm.controls['name']?.dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['name'], 'name')}}</div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="genres">Genres</label>
+                            <tag-input [ngModel]="chosenGenres" [identifyBy]="'id'" [displayBy]="'name'"
+                                id="genres" formControlName="genres" required [onlyFromAutocomplete]="true">
+                                <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]='genres' [keepOpen]="false"
+                                    [identifyBy]="'id'" [displayBy]="'name'">
+                                    <ng-template let-item="item" let-index="index">
+                                        {{ item.name }}
+                                    </ng-template>
+                                </tag-input-dropdown>
+                            </tag-input>
+                            <div *ngIf="songsheetForm.controls['genres'].invalid && (songsheetForm.controls['genres'].touched || songsheetForm.controls['genres'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['genres'], 'genres')}}</div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="instruments">Instruments</label>
+                            <tag-input [ngModel]="chosenInstruments" [identifyBy]="'id'" [displayBy]="'name'"
+                                id="instruments" formControlName="instruments" required [onlyFromAutocomplete]="true">
+                                <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]='instruments' [keepOpen]="false"
+                                    [identifyBy]="'id'" [displayBy]="'name'">
+                                    <ng-template let-item="item" let-index="index">
+                                        {{ item.name }}
+                                    </ng-template>
+                                </tag-input-dropdown>
+                            </tag-input>
+                            <div *ngIf="songsheetForm.controls['instruments'].invalid && (songsheetForm.controls['instruments'].touched || songsheetForm.controls['instruments'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['instruments'], 'instruments')}}
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="artist-name">Artist Name</label>
+                            <input type="text" class="form-control" maxlength="100" id="artist-name"
+                                [formControl]="songsheetForm.controls['artistName']"
+                                [value]="currentSongsheet.artistName || ''" placeholder="Enter a name of Artist"
+                                required>
+                            <div class="invalid-feedback">
+                                Please enter a name of artist.
+                            </div>
+                            <div *ngIf="songsheetForm.controls['artistName'].invalid && (songsheetForm.controls['artistName'].touched || songsheetForm.controls['artistName'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['artistName'], 'artistName')}}
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="producer">Composer</label>
+                            <input type="text" class="form-control" maxlength="100" id="producer"
+                                [formControl]="songsheetForm.controls['producer']"
+                                [value]="currentSongsheet.producer || ''" placeholder="Enter a name of Producer"
+                                required>
+                            <div class="invalid-feedback">
+                                Please provide a valid name of producer.
+                            </div>
+                            <div *ngIf="songsheetForm.controls['producer'].invalid && (songsheetForm.controls['producer'].touched || songsheetForm.controls['producer'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['producer'], 'producer')}}</div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="arranger">Arranger</label>
+                            <input type="text" class="form-control" maxlength="100" id="arranger"
+                                [formControl]="songsheetForm.controls['arranger']"
+                                [value]="currentSongsheet.arranger || ''" placeholder="Enter a name of Arranger"
+                                required>
+                            <div class="invalid-feedback">
+                                Please provide a valid name of arranger.
+                            </div>
+                            <div *ngIf="songsheetForm.controls['arranger'].invalid && (songsheetForm.controls['arranger'].touched || songsheetForm.controls['arranger'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['arranger'], 'arranger')}}</div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="description">Music Score Description</label>
+                            <textarea maxlength="750" class="form-control" id="description"
+                                [value]="currentSongsheet.description || ''" placeholder="Enter a description here..."
+                                [formControl]="songsheetForm.controls['description']" required>
+                            </textarea>
+                            <div *ngIf="songsheetForm.controls['description'].invalid && (songsheetForm.controls['description'].touched || songsheetForm.controls['description'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['description'], 'description')}}
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="youtube-link">Link to YouTube</label>
+                            <input type="text" class="form-control" id="youtube-link"
+                                [formControl]="songsheetForm.controls['youTubeLink']"
+                                [value]="currentSongsheet.youTubeLink || ''" placeholder="https://www.youtube.com/">
+                            <div *ngIf="songsheetForm.controls['youTubeLink']?.invalid && (songsheetForm.controls['youTubeLink']?.touched || songsheetForm.controls['youTubeLink']?.dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['youTubeLink'], 'youTubeLink')}} 
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="preview">Preview Music Score (.pdf)</label>
+                            <input id="preview" class="form-control-file image-input"
+                                (change)="onFileChange($event, 'SongsheetPreview')" accept=".pdf" type="file"
+                                alt="Songsheet preview">
+                            <div *ngIf="songsheetForm.controls['preview'].invalid && (songsheetForm.controls['preview'].touched || songsheetForm.controls['preview'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['preview'], 'previewId')}}</div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="file">Upload Music Score (.pdf)</label>
+                            <input id="file" class="form-control-file image-input"
+                                (change)="onFileChange($event, 'Songsheet')" accept=".pdf" type="file"
+                                alt="Songsheet file">
+                            <div *ngIf="songsheetForm.controls['file'].invalid && (songsheetForm.controls['file'].touched || songsheetForm.controls['file'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['file'], 'fileId')}}</div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="track">Upload (.mp3)</label>
+                            <input #chooseTrackInput id="track" class="form-control-file image-input"
+                                (change)="onFileChange($event, 'AudioTrack')" accept=".mp3, .aac" type="file"
+                                alt="Audio track">
+                            <button #deleteTrackButton [disabled]="!currentSongsheet.track" (click)="deleteAudioTrack($event)" type="button" class="btn-delete mt-2">Delete</button>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="make-top"
+                                    [formControl]="songsheetForm.controls['isTop']"
+                                    [checked]="currentSongsheet.isTop || ''">
+                                <label class="form-check-label" for="make-top">
+                                    Make top
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="price">Price</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="price"
+                                [formControl]="songsheetForm.controls['price']" [value]="currentSongsheet.price"
+                                pattern="[0-9]{1, 10}(.[0-9]{0,2})?"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                            <div *ngIf="songsheetForm.controls['price'].invalid && (songsheetForm.controls['price'].touched || songsheetForm.controls['price'].dirty)"
+                                class="error">{{validateControl(songsheetForm.controls['price'], 'price')}}</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary pull-right"
+                        type="submit">{{currentSongsheet.id > 0 ? 'Save changes' : 'Create Music Score'}}</button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</app-view-container>

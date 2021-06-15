@@ -1,0 +1,16 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Settings</h2>
+    </ng-container>
+
+    <ng-container content>
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Settings for {{user.email}}</h5>
+            </div>
+            <div class="ibox-content">
+                <button class="btn btn-primary btn-default" routerLink="/change-password" type="button">Change Password</button>
+            </div>
+        </div>
+    </ng-container>
+</app-view-container>

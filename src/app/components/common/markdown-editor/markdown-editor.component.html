@@ -1,0 +1,9 @@
+<div class="markdown-editor">
+    <label class="block">
+        <textarea #mdeContainer title="editor"></textarea>
+    </label>
+</div>
+
+<input type="file" #imageInput class="overflow-hidden"
+    (change)="handleImageSelected()"
+/>

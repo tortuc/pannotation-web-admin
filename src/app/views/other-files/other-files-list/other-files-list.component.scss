@@ -1,0 +1,26 @@
+.of-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 7px;
+
+    &-actions {
+        a {
+            color: #ffffff;
+        }
+    }
+}
+
+::ng-deep #other-file-types {
+    border: 1px solid #e5e6e7;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    .ng2-tag-input {
+        border-bottom: none !important;
+
+        input {
+            height: 27px;
+        }
+    }
+}

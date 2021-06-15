@@ -1,0 +1,95 @@
+<app-view-container>
+    <ng-container toolbar>
+        <h2>Subscription details</h2>
+        <breadcrumb #parent>
+            <ol class="breadcrumb">
+                <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+                    <li *ngIf="!route.terminal" class="breadcrumb-item">
+                        <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+                    </li>
+                    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">
+                        {{ route.displayName }}</li>
+                </ng-template>
+            </ol>
+        </breadcrumb>
+    </ng-container>
+
+    <ng-container content>
+        <div class="subscription">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="m-t-md block">
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Date:</dt>
+                                            <dd class="d-inline-block">{{ subscription.purchaseDate | date: 'dd MMM yyyy' }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Next payment date:</dt>
+                                            <dd class="d-inline-block">{{ subscription.nextPaymentDate | date: 'dd MMM yyyy' }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Full name:</dt>
+                                            <dd class="d-inline-block">
+                                                <a [routerLink]="['/users', subscription.userId]">
+                                                    {{ subscription.firstName }} {{ subscription.lastName }}
+                                                </a>
+                                            </dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Email:</dt>
+                                            <dd class="d-inline-block">{{ subscription.email }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Phone:</dt>
+                                            <dd class="d-inline-block">{{ subscription.phoneNumber }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Mobile phone:</dt>
+                                            <dd class="d-inline-block">{{ subscription.mobileNumber }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Country:</dt>
+                                            <dd class="d-inline-block">{{ subscription.country }}</dd>
+                                        </dl>
+                                        <dl class="m-t-md" *ngIf="subscription.idCode">
+                                                <dt class="d-inline-block">Composer/Arranger:</dt>
+                                                <dd class="d-inline-block">{{ subscription.idCode }}</dd>
+                                            </dl>
+                                    </div>
+                                    <div class="m-t-md">
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Payment processor:</dt>
+                                            <dd class="d-inline-block">
+                                                {{subscription.transactionInfo ? subscription.transactionInfo.paymentProcessor : ""}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Last 4 digits:</dt>
+                                            <dd class="d-inline-block">
+                                                {{subscription.transactionInfo ? subscription.transactionInfo.cardMask : ""}}</dd>
+                                        </dl>
+                                        <dl class="m-t-md">
+                                            <dt class="d-inline-block">Expiration date:</dt>
+                                            <dd class="d-inline-block">
+                                                {{subscription.transactionInfo ? (subscription.transactionInfo.expirationDate) : ""}}</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="m-t-md block">
+                                        <dt class="d-inline-block">Subscription status:</dt>
+                                        <dd class="d-inline-block">
+                                            <app-toggle [isActive]="subscription.nextPaymentDate != null" [onChange]="unsubscribe.bind(this)"></app-toggle>
+                                        </dd>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+</app-view-container>
